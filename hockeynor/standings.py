@@ -38,7 +38,7 @@ def transform_model_to_dict(html: str) -> typing.Dict:
     standings = json.loads(model)
 
     if not isinstance(standings, dict):
-        ValueError('Unexpected {} in html'.format(type(standings)))
+        raise ValueError('Unexpected {} in html'.format(type(standings)))
     return standings
 
 
