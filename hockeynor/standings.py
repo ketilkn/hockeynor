@@ -31,7 +31,7 @@ def find_model(html: str) -> str:
     return html[start: end]
 
 
-def transform_model_to_dict(html: str) -> typing.Dict:
+def html_to_dict(html: str) -> typing.Dict:
     if html is None:
         raise ValueError('html cannot be None')
     model = find_model(html)
@@ -55,7 +55,7 @@ def load():
         LOG.error('Problem downloading standings {} {}'.format(response.status_code, response.reason))
         return []
 
-    standing = transform_model_to_dict(response.text)
+    standing = html_to_dict(response.text)
 
     return standing
 

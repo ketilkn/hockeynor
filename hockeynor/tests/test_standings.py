@@ -46,7 +46,7 @@ def test_find_model():
     assert result[-1] == '}'
 
 
-def test_transform_model_to_json():
+def test_html_to_json():
     result = standings.transform_model_to_dict(TEST_DATA)
 
     assert isinstance(result, dict)
@@ -54,7 +54,7 @@ def test_transform_model_to_json():
     assert len(result['Rows']) == 10
 
 
-def test_transform_model_to_json_raise_value_error():
+def test_html_to_json_raise_value_error():
     with pytest.raises(ValueError) as none_is_illegal:
         standings.transform_model_to_dict(None)
     with pytest.raises(ValueError) as object_expected:
