@@ -1,5 +1,5 @@
 from datetime import datetime
-from hockeynor import upcoming
+from hockeynor import scoreboard
 
 
 
@@ -42,7 +42,7 @@ TEST_DATA = """{"Matches": [
 
 
 def test_transform():
-    result = upcoming.transform(TEST_DATA)
+    result = scoreboard.transform(TEST_DATA)
     assert isinstance(result, list)
     assert len(result) == 3
     assert result[0]['home'] == 'Stavanger Ishockeyklubb'
@@ -55,4 +55,4 @@ def test_transform():
 
 
 def test_build_url():
-    assert upcoming.build_url() == 'https://www.hockey.no/MatchResultSliderBlock/Load'
+    assert scoreboard.build_url() == 'https://www.hockey.no/MatchResultSliderBlock/Load'

@@ -63,13 +63,17 @@ def main():
     if arguments.pprint:
         pprint(result, indent=2)
     else:
-        prev = None
-        for match in result:
-            print(match['start_date'] if not prev or prev['start_date'] != match['start_date'] else '                   ',
-                  match['home'], '-', match['away'],
-                  '({}-{})'.format(match['home_score'], match['away_score']) if match['home_score'] else '')
-            prev = match
+        print_scoreboard(result)
     return result
+
+
+def print_scoreboard(result):
+    prev = None
+    for match in result:
+        print(match['start_date'] if not prev or prev['start_date'] != match['start_date'] else '                   ',
+              match['home'], '-', match['away'],
+              '({}-{})'.format(match['home_score'], match['away_score']) if match['home_score'] else '')
+        prev = match
 
 
 r = None
