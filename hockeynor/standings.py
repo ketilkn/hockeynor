@@ -60,6 +60,15 @@ def load():
     return standing
 
 
+def print_standings(standings):
+    print("NO Team                    GP W  OW SW OL SL  L PTS  GF  GA  PIM  PCT")
+    for team in standings['Rows']:
+        print('{Number:>2} {Name:23} {GP:>2} {W:>2} {OTW:>2} {SOW:>2} {OTL:>2} {SOL:>2} {L:>2} {PTS:>3} {GF:>3} {GA:>3} {PIM:>4} {PCT:>3}'.format(
+                **{**{'Number': team['Number'], 'Name': team['Name']},
+                **{el['Name']: int(el['Result']) for el in team['Results']}}))
+
+
+
 def main():
     import sys
     import argparse
@@ -72,10 +81,12 @@ def main():
 
     arguments = arg_parser.parse_args()
 
-    result = True
+    result = load()
 
     if arguments.pprint:
-        pprint(result, indent=2)
+        pprint(result, indent=4)
+    else:
+        print_standings(result)
     return result
 
 
