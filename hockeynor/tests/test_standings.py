@@ -47,7 +47,7 @@ def test_find_model():
 
 
 def test_transform_model_to_json():
-    result = standings.transform_model_to_json(TEST_DATA)
+    result = standings.transform_model_to_dict(TEST_DATA)
 
     assert isinstance(result, dict)
     assert 'Rows' in result
@@ -56,9 +56,9 @@ def test_transform_model_to_json():
 
 def test_transform_model_to_json_raise_value_error():
     with pytest.raises(ValueError) as none_is_illegal:
-        standings.transform_model_to_json(None)
+        standings.transform_model_to_dict(None)
     with pytest.raises(ValueError) as object_expected:
-        standings.transform_model_to_json('<html><script>hockey.live.createStandingsViewModel("eh");')
+        standings.transform_model_to_dict('<html><script>hockey.live.createStandingsViewModel("eh");')
 
 
 def test_build_url():
