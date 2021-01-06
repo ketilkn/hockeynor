@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import logging
 import json
 from pprint import pprint
@@ -45,6 +45,31 @@ def load():
     return matches
 
 
+def filter_datetime(matches: typing.List[typing.Dict], start: datetime=None, end: datetime = None, day: datetime=None) -> typing.List[typing.Dict]:
+    first, last = datetime(1977, 4, 29, 0, 0), datetime(2100, 12, 31, 23, 59)
+    if day:
+        first, last = day.replace(hour=0, minute=0), day.replace(hour=23, minute=59)
+    elif start:
+        first = start
+        last = end if end else datetime(2100, 12, 31)
+        if first == last:
+            last = first.replace(hour=23, minute=59)
+
+    return [m for m in matches if first <= m['start_date'] <= last]
+
+
+def today(matches: typing.List[typing.Dict]):
+    return filter_datetime(matches, day=datetime.today())
+
+
+def past(matches: typing.List[typing.Dict]):
+    return filter_datetime(matches, start=datetime(1977, 4, 29), end=datetime.today().replace(hour=0, minute=0))
+
+
+def future(matches: typing.List[typing.Dict]):
+    return filter_datetime(matches, start=datetime.today().replace(hour=23, minute=59))
+
+
 def main():
     import sys
     import argparse
@@ -54,11 +79,24 @@ def main():
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('--debug', action='store_true')
     arg_parser.add_argument('--pprint', action='store_true')
+    arg_parser.add_argument('--past', action='store_true')
+    arg_parser.add_argument('--today', action='store_true')
+    arg_parser.add_argument('--future', action='store_true')
+
     #arg_parser.add_argument('--infile', nargs='?', type=argparse.FileType('r', encoding='utf8'), default=sys.stdin)
 
     arguments = arg_parser.parse_args()
 
     result = load()
+    if any([arguments.future, arguments.past, arguments.today]):
+        filtered = []
+        if arguments.past:
+            filtered = filtered + past(result)
+        if arguments.today:
+            filtered = filtered + today(result)
+        if arguments.future:
+            filtered = filtered + future(result)
+        result = filtered
 
     if arguments.pprint:
         pprint(result, indent=2)
